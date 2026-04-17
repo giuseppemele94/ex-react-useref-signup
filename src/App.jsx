@@ -1,17 +1,19 @@
-import { useState } from 'react'
+import { useState,useRef } from 'react'
 
 function App() {
 
   //nome completo
-  const [fullname, setFullname] = useState("");
+  const fullnameRef = useRef();
+  //specializzazione
+  const specializationRef = useRef();
+  //anni di esperienza
+  const yearsRef = useRef(); 
+
+
   //username
   const [username, setUsername] = useState("");
   //Password
   const [password, setPassword] = useState("");
-  //specializzazione
-  const [specialization, setSpecialization] = useState("");
-  //anni di esperienza
-  const [years, setYears] = useState("");
   //breve descrizione
   const [description, setDescription] = useState("");
 
@@ -77,9 +79,13 @@ function App() {
   const submit = (e) => {
     e.preventDefault();
 
+    //valori non controllati
+    const fullName = fullnameRef.current.value;
+    const specialization = specializationRef.current.value;
+    const years = yearsRef.current.value; 
     // controllo campi vuoti
     if (
-      !fullname.trim() ||
+      !fullName.trim() ||
       !username.trim() ||
       !password.trim() ||
       !specialization ||
@@ -96,11 +102,11 @@ function App() {
       return;
     }
 
-    
+
 
     // se tutti i controlli sono superati, stampo i dati in console
     console.log({
-      fullname,
+      fullName,
       username,
       password,
       specialization,
@@ -117,8 +123,7 @@ function App() {
         <section>
           <input
             type="text"
-            value={fullname}
-            onChange={(e) => setFullname(e.target.value)}
+            ref={fullnameRef}
             placeholder="Nome Completo"
           />
         </section>
@@ -164,8 +169,8 @@ function App() {
         {/** specializzazione */}
         <section>
           <select
-            value={specialization}
-            onChange={(e) => setSpecialization(e.target.value)}
+            ref={specializationRef}
+            
           >
             <option value="">Seleziona una specializzazione</option>
             <option value="Full Stack">Full Stack</option>
@@ -178,8 +183,8 @@ function App() {
         <section>
           <input
             type="number"
-            value={years}
-            onChange={(e) => setYears(e.target.value)}
+            
+            ref={yearsRef}
             placeholder="anni di esperienza"
           />
         </section>
