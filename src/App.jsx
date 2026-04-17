@@ -30,13 +30,13 @@ function App() {
       !years ||
       !description.trim()
     ) {
-      console.log("Compila tutti i campi");
+      alert("Compila tutti i campi");
       return;
     }
 
     // controllo anni di esperienza
     if (Number(years) <= 0) {
-      console.log("Gli anni di esperienza devono essere un numero positivo");
+      alert("Gli anni di esperienza devono essere un numero positivo");
       return;
     }
 
@@ -51,8 +51,8 @@ function App() {
   }
 
   return (
-    <div>
-      <form onSubmit={submit}>
+    <div className='app'>
+      <form className="form-card" onSubmit={submit}>
 
         {/** Nome completo */}
         <section>
@@ -99,7 +99,7 @@ function App() {
           <input
             type="number"
             value={years}
-            onChange={(e) => setYears(Number(e.target.value))}
+            onChange={(e) => setYears(e.target.value)}
             placeholder="anni di esperienza" />
         </section>
 
