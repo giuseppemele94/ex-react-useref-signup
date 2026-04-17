@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-
 function App() {
 
   //nome completo
@@ -16,10 +15,67 @@ function App() {
   //breve descrizione
   const [description, setDescription] = useState("");
 
+  // stringhe utili per i controlli di username e password
+  const letters = "abcdefghijklmnopqrstuvwxyz";
+  const numbers = "0123456789";
+  const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/~\``;
+
+  // -------- VALIDAZIONE USERNAME IN TEMPO REALE --------
+  // assumo inizialmente che lo username sia valido
+  let validUsername = true;
+
+  // controllo lunghezza minima
+  if (username.length < 6) {
+    validUsername = false;
+  }
+
+  // controllo che contenga solo lettere e numeri
+  // trasformo tutto in minuscolo così posso confrontare con la stringa letters
+  for (let char of username.toLowerCase()) {
+    if (!letters.includes(char) && !numbers.includes(char)) {
+      validUsername = false;
+    }
+  }
+
+  // -------- VALIDAZIONE PASSWORD IN TEMPO REALE --------
+  // variabili di appoggio per capire se c'è almeno una lettera, un numero e un simbolo
+  let hasLetter = false;
+  let hasNumber = false;
+  let hasSymbol = false;
+
+  for (let char of password.toLowerCase()) {
+    if (letters.includes(char)) {
+      hasLetter = true;
+    }
+
+    if (numbers.includes(char)) {
+      hasNumber = true;
+    }
+
+    if (symbols.includes(char)) {
+      hasSymbol = true;
+    }
+  }
+
+  // la password è valida solo se:
+  // - ha almeno 8 caratteri
+  // - contiene almeno una lettera
+  // - contiene almeno un numero
+  // - contiene almeno un simbolo
+  const validPassword =
+    password.length >= 8 && hasLetter && hasNumber && hasSymbol;
+
+  // -------- VALIDAZIONE DESCRIZIONE IN TEMPO REALE --------
+  // trim() elimina gli spazi iniziali e finali
+  const trimmedDescription = description.trim();
+
+  // la descrizione è valida se ha tra 100 e 1000 caratteri
+  const validDescription =
+    trimmedDescription.length >= 100 && trimmedDescription.length <= 1000;
+
 
   const submit = (e) => {
     e.preventDefault();
-
 
     // controllo campi vuoti
     if (
@@ -40,13 +96,16 @@ function App() {
       return;
     }
 
+    
+
+    // se tutti i controlli sono superati, stampo i dati in console
     console.log({
       fullname,
       username,
       password,
       specialization,
       years: Number(years),
-      description
+      description: trimmedDescription
     });
   }
 
@@ -60,7 +119,8 @@ function App() {
             type="text"
             value={fullname}
             onChange={(e) => setFullname(e.target.value)}
-            placeholder="Nome Completo" />
+            placeholder="Nome Completo"
+          />
         </section>
 
         {/** Username */}
@@ -69,16 +129,36 @@ function App() {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="username" />
+            placeholder="username"
+          />
+
+          {/** messaggio mostrato in tempo reale */}
+          {username && (
+            <strong style={{ color: validUsername ? "green" : "red" }}>
+              {validUsername
+                ? "Username valido"
+                : "Almeno 6 caratteri, solo lettere e numeri"}
+            </strong>
+          )}
         </section>
 
         {/** password */}
-        <section >
+        <section>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="password" />
+            placeholder="password"
+          />
+
+          {/** messaggio mostrato in tempo reale */}
+          {password && (
+            <strong style={{ color: validPassword ? "green" : "red" }}>
+              {validPassword
+                ? "Password valida"
+                : "Minimo 8 caratteri, 1 lettera, 1 numero e 1 simbolo"}
+            </strong>
+          )}
         </section>
 
         {/** specializzazione */}
@@ -88,19 +168,20 @@ function App() {
             onChange={(e) => setSpecialization(e.target.value)}
           >
             <option value="">Seleziona una specializzazione</option>
-            <option value="FullStack">FullStack</option>
-            <option value="FrontEnd">Frond-end</option>
-            <option value="BackEnd">Back-end</option>
+            <option value="Full Stack">Full Stack</option>
+            <option value="Frontend">Frontend</option>
+            <option value="Backend">Backend</option>
           </select>
         </section>
 
         {/** anni esperienza */}
-        <section >
+        <section>
           <input
             type="number"
             value={years}
             onChange={(e) => setYears(e.target.value)}
-            placeholder="anni di esperienza" />
+            placeholder="anni di esperienza"
+          />
         </section>
 
         {/** breve descrizione */}
@@ -110,6 +191,15 @@ function App() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Scrivi qui..."
           ></textarea>
+
+          {/** messaggio mostrato in tempo reale */}
+          {description && (
+            <strong style={{ color: validDescription ? "green" : "red" }}>
+              {validDescription
+                ? "Descrizione valida"
+                : "La descrizione deve contenere tra 100 e 1000 caratteri"}
+            </strong>
+          )}
         </section>
 
         <button type="submit">Registrati</button>
