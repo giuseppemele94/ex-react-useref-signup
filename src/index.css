@@ -64,6 +64,7 @@ body {
 .form-card button {
   width: 100%;
   padding: 12px;
+  
   border: none;
   border-radius: 10px;
   background: #4f8cff;
@@ -77,3 +78,4 @@ body {
 .form-card button:hover {
   background: #3b74dd;
 }
+

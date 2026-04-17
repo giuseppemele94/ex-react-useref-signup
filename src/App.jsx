@@ -1,4 +1,4 @@
-import { useState,useRef } from 'react'
+import { useState,useRef, useEffect } from 'react'
 
 function App() {
 
@@ -115,6 +115,35 @@ function App() {
     });
   }
 
+/* FOCUS AUTOMATICO AL PRIMO INPUT(FULLNAME) * */
+  useEffect(() => {
+    fullnameRef.current.focus();
+   
+  },[]); 
+
+
+  /**RESET DEGLI INPUT */
+
+  
+  function resetInput() {
+
+    //input non controllati
+    fullnameRef.current.value=""; 
+    specializationRef.current.value="";
+    yearsRef.current.value=""; 
+
+    // reset input controllati
+    setUsername("");
+    setPassword("");
+    setDescription("");
+
+    // rimetto il focus sul primo input
+    fullnameRef.current.focus();
+
+  }
+
+
+
   return (
     <div className='app'>
       <form className="form-card" onSubmit={submit}>
@@ -208,7 +237,9 @@ function App() {
         </section>
 
         <button type="submit">Registrati</button>
+       <button  type="button" onClick={resetInput}>Reset</button>
       </form>
+       
     </div>
   )
 }
